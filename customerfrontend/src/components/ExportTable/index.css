@@ -1,0 +1,9 @@
+.exportBtn {
+    border-color: #0095ff;
+    border-style: solid;
+    height: 30px;
+    width: 160px;
+    border-radius: 5px;
+    background-color: transparent;
+    margin-right: 30px;
+}

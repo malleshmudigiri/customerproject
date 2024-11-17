@@ -1,0 +1,35 @@
+
+.HomeContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+
+}
+
+
+table td, th{
+    border: 1px solid #ccc;
+}
+
+table {
+    width: 80%;
+    height:70%;
+    border-collapse: collapse;
+}
+
+.homeData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.homeTab {
+    align-self: start;
+    font-size: 16px;
+}
+.homeDescription {
+    justify-self: center;
+
+}

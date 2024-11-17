@@ -1,0 +1,118 @@
+.uploadContainer {
+    font-size: 15px;
+}
+.uploadTable {
+    width: 1000px;
+    height: 400px;
+    margin: 50px;
+    margin-top: 10px;
+
+
+}
+.uploadCustomerHead {
+    font-size: 15px;
+}
+.uploadCustomerTab{
+    font-size: 15px;
+}
+body {
+    display: flex;
+
+    height: 100vh;
+    margin: 0;
+}
+
+table {
+
+    border-collapse: collapse;
+
+
+}
+.uploadTable td, th {
+    padding: 10px;
+}
+
+
+.btnContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.button {
+    height: 40px;
+    width: 150px;
+    background-color: transparent;
+    border-radius: 5px;
+
+}
+
+
+.textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.success-message {
+    color: green;
+    margin-top: 10px;
+}
+
+.btnContainer .button {
+
+    color: black;
+
+
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button {
+    border-color: #0095ff;
+   border-style: solid;
+    height: 30px;
+    width: 120px;
+}
+
+
+.teaxtAreaContainer{
+    display: flex;
+    flex-direction: row;
+
+}
+.textarea {
+    width: 350px;
+    height: 60px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.customeListTable {
+    height:  auto;
+    width: 500px;
+    border: 1px solid black;
+    margin-top: 20px;
+    margin-left: 30px;
+    max-height: 100px;
+}
+.customeListTable td,th {
+    height: 5px;
+    padding: 5px;
+
+    text-align: center;
+}
+
+.uploaTopSection {
+    position: sticky; /* Make the header sticky */
+    top: 0;
+
+}
