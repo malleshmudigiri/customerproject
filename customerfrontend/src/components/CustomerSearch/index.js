@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ExportTable from '../ExportTable/index.js';
 import './index.css';
 import LeftHeader from "../LeftHeader/index.js";
@@ -7,48 +7,51 @@ import { Link } from "react-router-dom";
 
 const CustomerSearch = () => {
 
-    const [filter, setFilter] = useState({ name: '', gender: 'All' });
-    const [customers, setUpCustomerList] = useState([]);
+    const [filter, setFilter] = useState({ name: '', gender: '' });
     const [filteredCustomers, setFilteredCustomers] = useState([]);
     const [isSearchBtn, setSearchBtn] = useState(false);
+    const [errors, setErrors] = useState("");
 
 
     const fetchData = async () => {
-        const response = await fetch('http://localhost:8080/api/customers');
-        const customerList = await response.json();
-        setUpCustomerList(customerList);
+     const {name, gender}=filter;
+        let url = 'http://localhost:8080/api/filter';
+
+        const params = new URLSearchParams();
+
+        if (name) {
+            params.append('customerName', name);
+        }
+        if (gender) {
+            params.append('gender', gender);
+        }
+        if (params.toString()) {
+            url += `?${params.toString()}`;
+        }
+        try {
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                const customerList = await response.json();
+                setFilteredCustomers(customerList);
+            }
+        }catch {
+            setErrors('Error fetching data');
+        }
 
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-const clearedFilteredData=()=> {
-    if (filteredCustomers.length === 0) {
-        setSearchBtn(false);
-    } else {
-        setSearchBtn(true);
-    }
-}
+
     const onSearch=()=> {
-        clearedFilteredData();
-
-        if (customers.length > 0) {
-            setSearchBtn(true)
-            setFilteredCustomers(
-                customers.filter((customer) => {
-
-                    const nameMatch = customer.customerName && customer.customerName.toLowerCase().includes(filter.name.toLowerCase());
-
-                    const genderMatch =
-                        filter.gender === 'All' || customer.gender.toLowerCase() === filter.gender.toLowerCase();
-                    return nameMatch && genderMatch;
-                })
-            );
-        }
+        const {name, gender}=filter;
+            fetchData();
+            setSearchBtn(true);
     }
-
-
 
 
     const handleFilterChange = (e) => {
@@ -59,7 +62,7 @@ const clearedFilteredData=()=> {
         }));
 
     };
-    console.log(filteredCustomers);
+
 
     return (
         <div className="searchContainer">
@@ -96,7 +99,7 @@ const clearedFilteredData=()=> {
                                         onChange={handleFilterChange}
                                         className="InputEl"
                                     >
-                                        <option value="All">All</option>
+                                        <option selected ></option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
@@ -104,7 +107,7 @@ const clearedFilteredData=()=> {
                             </div>
                             <div className="searchBtnContainer">
                                 <button className="searchBtn" onClick={onSearch}>Search</button>
-                                <ExportTable />
+                                <ExportTable filter={filter}/>
                             </div>
                         </div>
                         {filteredCustomers.length>0 &&
@@ -130,11 +133,18 @@ const clearedFilteredData=()=> {
                         </table>
 
                         }
-                        {filteredCustomers.length===0  &&
+                        {(isSearchBtn && filteredCustomers.length===0)  &&
                             <div className="noDataFound">
                                 <h1>No Data Found</h1>
                             </div>
                         }
+
+                        {errors &&
+                            <div className="noDataFound">
+                                <h1>{errors}</h1>
+                            </div>
+                        }
+
                     </td>
                 </tr>
                 </tbody>

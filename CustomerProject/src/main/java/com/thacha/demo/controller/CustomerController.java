@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thacha.demo.model.Customer;
 import com.thacha.demo.service.CustomerService;
+
 
 
 
@@ -43,16 +45,24 @@ public class CustomerController {
 	public List<Customer> addCustomers(@RequestBody List<Customer> customers) {
 		return customerService.addCustomers(customers);
 	}
-   
+   @GetMapping("/filter")
+public List<Customer> filterCustomers(
+        @RequestParam(required = false) String customerName,
+        @RequestParam(required = false) String gender) {
 
+    return customerService.filterCustomers(customerName,gender);
+}
+
+	
 	@GetMapping("/export/excel")
-    public ResponseEntity<byte[]> exportToExcel() {
-		List<Customer> customers=customerService.getCustomers();
+    public ResponseEntity<byte[]> exportToExcel(  @RequestParam(required = false) String customerName,
+	@RequestParam(required = false) String gender) {
+		List<Customer> customers=customerService.filterCustomers(customerName,gender);
 		ArrayList<Customer> customerList= new ArrayList<>(customers);
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Table Data");
      
-            // Sample header row
+           
             Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("CustomerId");
             headerRow.createCell(1).setCellValue("CustomerName");
@@ -71,11 +81,9 @@ public class CustomerController {
 				
 			}
 
-            // Writing to byte array output stream
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
 
-            // Prepare the HTTP response
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-Disposition", "attachment; filename=table-data.xlsx");
 

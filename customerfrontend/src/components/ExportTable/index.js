@@ -1,25 +1,35 @@
 import React from "react";
 import "./index.css";
 
-const ExportTable = () => {
+const ExportTable = ({ filter }) => {
     const handleExport = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/export/excel", {
-                responseType: "blob",
-            });
+            const { name, gender } = filter;
+            let exportUrl = "http://localhost:8080/api/export/excel";
+            const params = new URLSearchParams();
 
+            if (name) {
+                params.append('customerName', name);
+            }
+            if (gender) {
+                params.append('gender', gender);
+            }
+            if (params.toString()) {
+                exportUrl += `?${params.toString()}`;
+            }
+            const response = await fetch(exportUrl);
 
-            const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-
-
+            if (!response.ok) {
+                throw new Error("Failed to fetch the Excel file");
+            }
+            const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
+
             const a = document.createElement("a");
             a.href = url;
             a.download = "table-data.xlsx";
             document.body.appendChild(a);
             a.click();
-
-
             a.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {

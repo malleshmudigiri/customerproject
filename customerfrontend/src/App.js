@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CustomerUpload from './components/CustomerUpload/index.js';
 import CustomerSearch from './components/CustomerSearch/index.js';
 import Home from './components/Home/index.js';
-import Header from "./components/Header/index.js";
+
 
 const App = () => {
   return (

@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.thacha.demo.model.Customer;
 import com.thacha.demo.repository.CustomerJpaRepository;
-import com.thacha.demo.repository.CustomerRepository;
 @Service
-public class CustomerService implements CustomerRepository{
+public class CustomerService {
 	
 	private CustomerJpaRepository customerJpaRepository;
 	@Autowired
@@ -17,16 +16,38 @@ public class CustomerService implements CustomerRepository{
 		this.customerJpaRepository=customerJpaRepository;
 	}
 
-	@Override
+	
 	public List<Customer> addCustomers(List<Customer> customers) {
 		return customerJpaRepository.saveAll(customers);
 	}
 
-	@Override
+	
 	public List<Customer> getCustomers() {
 		List<Customer> customers=customerJpaRepository.findAll();
+		
 		return customers;
 	}
+
+	public List<Customer> filterCustomers(String customerName, String gender) {
+        if (customerName != null && gender != null) {
+			
+          
+            return customerJpaRepository.findByCustomerNameIgnoreCaseAndGenderIgnoreCase(customerName, gender);
+        } else if (customerName != null) {
+        
+            return customerJpaRepository.findByCustomerNameIgnoreCase(customerName);
+        } else if (gender != null) {
+          
+            return customerJpaRepository.findByGender(gender);
+        } else {
+           
+            return customerJpaRepository.findAll();
+        }
+    }
+
+	
+
+
 	
 	
 

@@ -116,3 +116,11 @@ table {
     top: 0;
 
 }
+
+.errorContainer {
+    align-self: center;
+    color: red;
+    font-size: 10px;
+    text-align: center;
+    margin-top: 30px;
+}
